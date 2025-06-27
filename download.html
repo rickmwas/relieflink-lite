@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download ReliefLink Lite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <span>ReliefLink Lite</span>
+            </div>
+            <nav class="nav">
+                <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            </nav>
+        </header>
+
+        <main class="main-content">
+            <section class="download-section">
+                <div class="download-card">
+                    <div class="download-icon">
+                        <i class="fas fa-download"></i>
+                    </div>
+                    <h1>Download ReliefLink Lite</h1>
+                    <p>Get the complete emergency aid coordination platform for offline use</p>
+                    
+                    <div class="download-info">
+                        <h3>What's Included:</h3>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Complete web application</li>
+                            <li><i class="fas fa-check"></i> Local storage database (no billing required)</li>
+                            <li><i class="fas fa-check"></i> Intelligent matching algorithm</li>
+                            <li><i class="fas fa-check"></i> Admin dashboard</li>
+                            <li><i class="fas fa-check"></i> Mobile-responsive design</li>
+                            <li><i class="fas fa-check"></i> All source code and documentation</li>
+                        </ul>
+                    </div>
+
+                    <div class="download-buttons">
+                        <a href="relieflink-lite.zip" download="relieflink-lite.zip" class="btn btn-primary">
+                            <i class="fas fa-download"></i>
+                            Download ZIP File
+                        </a>
+                    </div>
+
+                    <div class="instructions">
+                        <h3>How to Use Locally:</h3>
+                        <ol>
+                            <li>Download and extract the ZIP file</li>
+                            <li>Open a terminal in the extracted folder</li>
+                            <li>Run: <code>python -m http.server 8000</code></li>
+                            <li>Open browser to: <code>http://localhost:8000</code></li>
+                            <li>Start helping people in emergencies!</li>
+                        </ol>
+                    </div>
+
+                    <div class="tech-specs">
+                        <h3>Technical Details:</h3>
+                        <div class="specs-grid">
+                            <div class="spec-item">
+                                <strong>Technologies:</strong>
+                                <span>HTML5, CSS3, JavaScript</span>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Database:</strong>
+                                <span>Browser Local Storage</span>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Authentication:</strong>
+                                <span>Simple email-based demo system</span>
+                            </div>
+                            <div class="spec-item">
+                                <strong>Server:</strong>
+                                <span>Any static file server</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 ReliefLink Lite. Built for emergency aid coordination.</p>
+        </footer>
+    </div>
+
+    <style>
+        .download-section {
+            padding: 2rem 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .download-card {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .download-icon {
+            font-size: 4rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .download-info {
+            text-align: left;
+            margin: 2rem 0;
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .download-info ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .download-info li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .download-info .fas {
+            color: #27ae60;
+        }
+
+        .download-buttons {
+            margin: 2rem 0;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .instructions {
+            text-align: left;
+            margin: 2rem 0;
+            background: #e8f5e8;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .instructions code {
+            background: #2c3e50;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .tech-specs {
+            text-align: left;
+            margin: 2rem 0;
+            background: #f0f0f0;
+            padding: 1.5rem;
+            border-radius: 10px;
+        }
+
+        .specs-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</body>
+</html>

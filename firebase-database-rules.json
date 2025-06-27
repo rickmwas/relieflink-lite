@@ -1,0 +1,29 @@
+{
+  "rules": {
+    "help-requests": {
+      ".read": true,
+      ".write": true,
+      "$requestId": {
+        ".validate": "newData.hasChildren(['requesterName', 'helpCategory', 'urgencyLevel', 'location', 'description'])"
+      }
+    },
+    "help-offers": {
+      ".read": true,
+      ".write": true,
+      "$offerId": {
+        ".validate": "newData.hasChildren(['providerName', 'helpTypes', 'providerLocation', 'availability'])"
+      }
+    },
+    "matches": {
+      ".read": true,
+      ".write": true,
+      "$matchId": {
+        ".validate": "newData.hasChildren(['requestId', 'offerId', 'matchScore'])"
+      }
+    },
+    "admins": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    }
+  }
+}

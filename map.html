@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map View - ReliefLink Lite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>ReliefLink Lite</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="admin.html" class="nav-link">Admin</a>
+                <div id="auth-section">
+                    <button id="login-btn" class="btn btn-outline">Login</button>
+                    <div id="user-info" class="user-info hidden">
+                        <span id="user-name"></span>
+                        <button id="logout-btn" class="btn btn-outline">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Map Controls -->
+        <section class="map-controls">
+            <div class="control-group">
+                <label class="control-label">
+                    <input type="checkbox" id="show-requests" checked> Show Requests
+                </label>
+                <label class="control-label">
+                    <input type="checkbox" id="show-offers" checked> Show Offers
+                </label>
+                <label class="control-label">
+                    <input type="checkbox" id="show-matches"> Show Matches
+                </label>
+            </div>
+            <div class="control-group">
+                <select id="urgency-filter">
+                    <option value="all">All Urgency</option>
+                    <option value="critical">Critical</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <select id="category-filter">
+                    <option value="all">All Categories</option>
+                    <option value="food">Food & Water</option>
+                    <option value="medical">Medical</option>
+                    <option value="shelter">Shelter</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="transportation">Transportation</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- Map Container -->
+        <section class="map-section">
+            <div id="map" class="map-container">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3>Interactive Map</h3>
+                    <p>Map will load here when Google Maps API is configured</p>
+                    <button id="load-map-btn" class="btn btn-primary">Load Map</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Legend -->
+        <section class="map-legend">
+            <h3>Map Legend</h3>
+            <div class="legend-items">
+                <div class="legend-item">
+                    <div class="legend-icon request-icon"></div>
+                    <span>Help Requests</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon offer-icon"></div>
+                    <span>Help Offers</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-icon match-icon"></div>
+                    <span>Successful Matches</span>
+                </div>
+            </div>
+            <div class="urgency-legend">
+                <h4>Urgency Levels</h4>
+                <div class="urgency-items">
+                    <div class="urgency-item">
+                        <div class="urgency-color critical"></div>
+                        <span>Critical</span>
+                    </div>
+                    <div class="urgency-item">
+                        <div class="urgency-color high"></div>
+                        <span>High</span>
+                    </div>
+                    <div class="urgency-item">
+                        <div class="urgency-color medium"></div>
+                        <span>Medium</span>
+                    </div>
+                    <div class="urgency-item">
+                        <div class="urgency-color low"></div>
+                        <span>Low</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ReliefLink Lite by SwizCoders - Code with Impact</p>
+        </footer>
+    </div>
+
+    <!-- Info Window Template -->
+    <div id="info-window-template" class="hidden">
+        <div class="info-window">
+            <div class="info-header">
+                <h4 id="info-title"></h4>
+                <span id="info-urgency" class="urgency-badge"></span>
+            </div>
+            <div class="info-content">
+                <p id="info-description"></p>
+                <div class="info-details">
+                    <div class="info-item">
+                        <strong>Contact:</strong> <span id="info-contact"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Location:</strong> <span id="info-location"></span>
+                    </div>
+                    <div class="info-item">
+                        <strong>Status:</strong> <span id="info-status"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="info-actions">
+                <button class="btn btn-sm btn-primary" onclick="viewDetails()">View Details</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Loading map data...</p>
+    </div>
+
+    <!-- Supabase Configuration -->
+    <script type="module" src="js/supabase-config.js"></script>
+    
+    <!-- Google Maps API - Add your API key here -->
+    <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&callback=initMap"></script> -->
+    
+    <!-- App Scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/map.js"></script>
+</body>
+</html>

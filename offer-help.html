@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offer Help - ReliefLink Lite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>ReliefLink Lite</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="map.html" class="nav-link">Map</a>
+                <div id="auth-section">
+                    <button id="login-btn" class="btn btn-outline">Login</button>
+                    <div id="user-info" class="user-info hidden">
+                        <span id="user-name"></span>
+                        <button id="logout-btn" class="btn btn-outline">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <i class="fas fa-heart"></i>
+                    <h2>Offer Help</h2>
+                    <p>Register your availability to help those in need. We'll match you with nearby requests.</p>
+                </div>
+
+                <form id="offer-help-form" class="form">
+                    <div class="form-group">
+                        <label for="provider-name">Full Name / Organization *</label>
+                        <input type="text" id="provider-name" name="providerName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider-phone">Contact Phone *</label>
+                        <input type="tel" id="provider-phone" name="providerPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider-email">Email Address</label>
+                        <input type="email" id="provider-email" name="providerEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider-type">Provider Type *</label>
+                        <select id="provider-type" name="providerType" required>
+                            <option value="">Select type...</option>
+                            <option value="individual">Individual Volunteer</option>
+                            <option value="ngo">NGO/Non-Profit</option>
+                            <option value="business">Business/Company</option>
+                            <option value="government">Government Agency</option>
+                            <option value="religious">Religious Organization</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="help-types">Types of Help You Can Provide *</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="food"> Food & Water
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="medical"> Medical Assistance
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="shelter"> Shelter & Housing
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="clothing"> Clothing & Supplies
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="transportation"> Transportation
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="helpTypes" value="other"> Other
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="provider-location">Your Location *</label>
+                        <input type="text" id="provider-location" name="providerLocation" placeholder="Enter your address or service area" required>
+                        <button type="button" id="get-location-btn" class="btn btn-outline">
+                            <i class="fas fa-map-marker-alt"></i> Use My Location
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service-radius">Service Radius (km)</label>
+                        <select id="service-radius" name="serviceRadius">
+                            <option value="5">Within 5 km</option>
+                            <option value="10" selected>Within 10 km</option>
+                            <option value="25">Within 25 km</option>
+                            <option value="50">Within 50 km</option>
+                            <option value="100">Within 100 km</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="availability">Availability *</label>
+                        <select id="availability" name="availability" required>
+                            <option value="">Select availability...</option>
+                            <option value="immediate">Available Immediately</option>
+                            <option value="within-hour">Within 1 Hour</option>
+                            <option value="within-day">Within 24 Hours</option>
+                            <option value="flexible">Flexible Schedule</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="capacity">Capacity to Help</label>
+                        <select id="capacity" name="capacity">
+                            <option value="1-5">1-5 people</option>
+                            <option value="6-20">6-20 people</option>
+                            <option value="21-50">21-50 people</option>
+                            <option value="50+">50+ people</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="additional-info">Additional Information</label>
+                        <textarea id="additional-info" name="additionalInfo" rows="3" placeholder="Any additional details about your offer..."></textarea>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-secondary">
+                            <i class="fas fa-heart"></i> Register Offer
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ReliefLink Lite by SwizCoders - Code with Impact</p>
+        </footer>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-check-circle"></i>
+                <h3>Offer Registered Successfully!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Thank you for your willingness to help! Your offer has been registered and will be matched with appropriate requests.</p>
+                <div class="offer-id">
+                    <strong>Offer ID: </strong><span id="generated-offer-id"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Registering offer...</p>
+    </div>
+
+    <!-- Supabase Configuration -->
+    <script type="module" src="js/supabase-config.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/auth-supabase.js"></script>
+    <script src="js/forms-supabase.js"></script>
+    <script src="js/matching.js"></script>
+</body>
+</html>

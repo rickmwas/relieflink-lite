@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Help - ReliefLink Lite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>ReliefLink Lite</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="map.html" class="nav-link">Map</a>
+                <div id="auth-section">
+                    <button id="login-btn" class="btn btn-outline">Login</button>
+                    <div id="user-info" class="user-info hidden">
+                        <span id="user-name"></span>
+                        <button id="logout-btn" class="btn btn-outline">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Form Section -->
+        <section class="form-section">
+            <div class="form-container">
+                <div class="form-header">
+                    <i class="fas fa-hand-paper"></i>
+                    <h2>Request Emergency Help</h2>
+                    <p>Fill out this form to request assistance. Our system will match you with nearby aid providers.</p>
+                </div>
+
+                <form id="request-help-form" class="form">
+                    <div class="form-group">
+                        <label for="requester-name">Full Name *</label>
+                        <input type="text" id="requester-name" name="requesterName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="requester-phone">Phone Number *</label>
+                        <input type="tel" id="requester-phone" name="requesterPhone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="help-category">Type of Help Needed *</label>
+                        <select id="help-category" name="helpCategory" required>
+                            <option value="">Select category...</option>
+                            <option value="food">Food & Water</option>
+                            <option value="medical">Medical Assistance</option>
+                            <option value="shelter">Shelter & Housing</option>
+                            <option value="clothing">Clothing & Supplies</option>
+                            <option value="transportation">Transportation</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="urgency-level">Urgency Level *</label>
+                        <select id="urgency-level" name="urgencyLevel" required>
+                            <option value="">Select urgency...</option>
+                            <option value="low">Low - Can wait several days</option>
+                            <option value="medium">Medium - Needed within 24 hours</option>
+                            <option value="high">High - Needed within 6 hours</option>
+                            <option value="critical">Critical - Immediate assistance needed</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location *</label>
+                        <input type="text" id="location" name="location" placeholder="Enter your address or area" required>
+                        <button type="button" id="get-location-btn" class="btn btn-outline">
+                            <i class="fas fa-map-marker-alt"></i> Use My Location
+                        </button>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description of Need *</label>
+                        <textarea id="description" name="description" rows="4" placeholder="Please describe your situation and specific needs..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="people-count">Number of People Affected</label>
+                        <input type="number" id="people-count" name="peopleCount" min="1" value="1">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Submit Request
+                        </button>
+                        <button type="button" class="btn btn-outline" onclick="window.history.back()">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ReliefLink Lite by SwizCoders - Code with Impact</p>
+        </footer>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-check-circle"></i>
+                <h3>Request Submitted Successfully!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Your help request has been submitted and will be reviewed by our system. You'll be notified when a match is found.</p>
+                <div class="request-id">
+                    <strong>Request ID: </strong><span id="generated-request-id"></span>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="closeModal()">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Submitting request...</p>
+    </div>
+
+    <!-- Supabase Configuration -->
+    <script type="module" src="js/supabase-config.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/auth-supabase.js"></script>
+    <script src="js/forms-supabase.js"></script>
+    <script src="js/matching.js"></script>
+</body>
+</html>

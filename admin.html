@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - ReliefLink Lite</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-hands-helping"></i>
+                <h1>ReliefLink Lite</h1>
+            </div>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="map.html" class="nav-link">Map</a>
+                <div id="auth-section">
+                    <button id="login-btn" class="btn btn-outline">Login</button>
+                    <div id="user-info" class="user-info hidden">
+                        <span id="user-name"></span>
+                        <button id="logout-btn" class="btn btn-outline">Logout</button>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- Admin Auth Check -->
+        <div id="admin-auth-check" class="admin-auth-check">
+            <div class="auth-check-content">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Admin Access Required</h2>
+                <p>Please login to access the admin dashboard.</p>
+                <button id="admin-login-btn" class="btn btn-primary">Login as Admin</button>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="admin-dashboard" class="admin-dashboard hidden">
+            <!-- Dashboard Stats -->
+            <section class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-hand-paper"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-requests-stat">0</h3>
+                        <p>Total Requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-offers-stat">0</h3>
+                        <p>Total Offers</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="total-matches-stat">0</h3>
+                        <p>Successful Matches</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="pending-requests-stat">0</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filter Controls -->
+            <section class="filter-section">
+                <div class="filter-controls">
+                    <select id="filter-type">
+                        <option value="all">All Items</option>
+                        <option value="requests">Requests Only</option>
+                        <option value="offers">Offers Only</option>
+                    </select>
+                    <select id="filter-status">
+                        <option value="all">All Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="matched">Matched</option>
+                        <option value="resolved">Resolved</option>
+                    </select>
+                    <select id="filter-urgency">
+                        <option value="all">All Urgency</option>
+                        <option value="critical">Critical</option>
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
+                    </select>
+                    <button id="refresh-data-btn" class="btn btn-outline">
+                        <i class="fas fa-refresh"></i> Refresh
+                    </button>
+                </div>
+            </section>
+
+            <!-- Tabs -->
+            <section class="tabs-section">
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="requests">
+                        <i class="fas fa-hand-paper"></i> Requests
+                    </button>
+                    <button class="tab-btn" data-tab="offers">
+                        <i class="fas fa-heart"></i> Offers
+                    </button>
+                    <button class="tab-btn" data-tab="matches">
+                        <i class="fas fa-handshake"></i> Matches
+                    </button>
+                </div>
+
+                <!-- Requests Tab -->
+                <div id="requests-tab" class="tab-content active">
+                    <div class="table-header">
+                        <h3>Help Requests</h3>
+                        <button id="run-matching-btn" class="btn btn-primary">
+                            <i class="fas fa-magic"></i> Run Matching
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table id="requests-table" class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Urgency</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="requests-tbody">
+                                <!-- Requests will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Offers Tab -->
+                <div id="offers-tab" class="tab-content">
+                    <div class="table-header">
+                        <h3>Help Offers</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="offers-table" class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Provider</th>
+                                    <th>Type</th>
+                                    <th>Help Types</th>
+                                    <th>Location</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="offers-tbody">
+                                <!-- Offers will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Matches Tab -->
+                <div id="matches-tab" class="tab-content">
+                    <div class="table-header">
+                        <h3>Successful Matches</h3>
+                    </div>
+                    <div class="table-container">
+                        <table id="matches-table" class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Match ID</th>
+                                    <th>Request</th>
+                                    <th>Offer</th>
+                                    <th>Match Score</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="matches-tbody">
+                                <!-- Matches will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2024 ReliefLink Lite by SwizCoders - Code with Impact</p>
+        </footer>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" class="modal hidden">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="modal-title">Details</h3>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Details will be populated here -->
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-outline" onclick="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Loading data...</p>
+    </div>
+
+    <!-- Supabase Configuration -->
+    <script type="module" src="js/supabase-config.js"></script>
+    
+    <!-- App Scripts -->
+    <script src="js/auth-supabase.js"></script>
+    <script src="js/admin-supabase.js"></script>
+    <script src="js/matching.js"></script>
+</body>
+</html>
