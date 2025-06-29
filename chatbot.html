@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Kenyan-inspired color scheme */
+        :root {
+            --kenya-green: #006644;
+            --kenya-red: #BB0000;
+            --kenya-black: #000000;
+            --kenya-white: #FFFFFF;
+            --kenya-yellow: #F7D002;
+        }
+
+        /* Chatbot container */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            width: 320px;
+            max-width: 90%;
+        }
+
+        /* Chat button */
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            background-color: var(--kenya-green);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-left: auto;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-button:hover {
+            background-color: var(--kenya-red);
+            transform: scale(1.1);
+        }
+
+        .chatbot-button i {
+            font-size: 24px;
+        }
+
+        /* Chat window */
+        .chatbot-window {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+            height: 400px;
+            border: 2px solid var(--kenya-black);
+        }
+
+        .chatbot-window.active {
+            display: flex;
+        }
+
+        /* Chat header */
+        .chatbot-header {
+            background-color: var(--kenya-green);
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chatbot-title {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .chatbot-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Messages area */
+        .chatbot-messages {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            background-color: #f9f9f9;
+        }
+
+        .message {
+            margin-bottom: 12px;
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            line-height: 1.4;
+            position: relative;
+        }
+
+        .user-message {
+            background-color: var(--kenya-yellow);
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+
+        .bot-message {
+            background-color: white;
+            border: 1px solid #ddd;
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+
+        /* Input area */
+        .chatbot-input {
+            display: flex;
+            padding: 12px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .chatbot-input button {
+            background-color: var(--kenya-green);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 0 16px;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .chatbot-input button:hover {
+            background-color: var(--kenya-red);
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            padding: 8px 12px;
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--kenya-green);
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: typingAnimation 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-5px); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .chatbot-container {
+                width: 90%;
+                right: 5%;
+                bottom: 10px;
+            }
+        }
+    </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="chatbot-container">
+        <div class="chatbot-button" id="chatbotButton">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <div class="chatbot-title">ReliefBot Assistant</div>
+                <button class="chatbot-close" id="chatbotClose">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <!-- Messages will appear here -->
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="userInput" placeholder="Type your question...">
+                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatbotButton = document.getElementById('chatbotButton');
+            const chatbotWindow = document.getElementById('chatbotWindow');
+            const chatbotClose = document.getElementById('chatbotClose');
+            const chatbotMessages = document.getElementById('chatbotMessages');
+            const userInput = document.getElementById('userInput');
+            const sendButton = document.getElementById('sendButton');
+
+            // Initial bot message
+            addBotMessage("Hello! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
+
+            // Toggle chat window
+            chatbotButton.addEventListener('click', function() {
+                chatbotWindow.classList.toggle('active');
+            });
+
+            chatbotClose.addEventListener('click', function() {
+                chatbotWindow.classList.remove('active');
+            });
+
+            // Send message on button click or Enter key
+            sendButton.addEventListener('click', sendMessage);
+            userInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            function sendMessage() {
+                const message = userInput.value.trim();
+                if (message) {
+                    addUserMessage(message);
+                    userInput.value = '';
+                    respondToMessage(message);
+                }
+            }
+
+            function addUserMessage(text) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', 'user-message');
+                messageDiv.textContent = text;
+                chatbotMessages.appendChild(messageDiv);
+                scrollToBottom();
+            }
+
+            function addBotMessage(text) {
+                // Show typing indicator
+                const typingIndicator = document.createElement('div');
+                typingIndicator.classList.add('typing-indicator');
+                typingIndicator.innerHTML = `
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                `;
+                chatbotMessages.appendChild(typingIndicator);
+                scrollToBottom();
+
+                // After a short delay, replace with actual message
+                setTimeout(() => {
+                    chatbotMessages.removeChild(typingIndicator);
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message', 'bot-message');
+                    messageDiv.textContent = text;
+                    chatbotMessages.appendChild(messageDiv);
+                    scrollToBottom();
+                }, 1000);
+            }
+
+            function scrollToBottom() {
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+
+            // Rule-based response system
+            function respondToMessage(message) {
+                const lowerMsg = message.toLowerCase();
+                let response = "";
+
+                // Help request related
+                if (lowerMsg.includes('request help') || lowerMsg.includes('need help')) {
+                    response = "To request help, go to the 'Request Help' page and fill out the form with your details. You'll need to provide your name, contact info, type of help needed, urgency level, and location. The system will then match you with potential aid providers.";
+                }
+                // Offer help related
+                else if (lowerMsg.includes('offer help') || lowerMsg.includes('provide help') || lowerMsg.includes('aid provider')) {
+                    response = "To offer help, visit the 'Offer Help' page and complete the provider registration form. You'll need to specify what type of help you can provide, your capacity, availability, and location. Once registered, our matching engine will connect you with those in need.";
+                }
+                // Login/registration
+                else if (lowerMsg.includes('login') || lowerMsg.includes('register') || lowerMsg.includes('sign up') || lowerMsg.includes('account')) {
+                    response = "You can register or login using your email and password. The first user to register becomes the admin automatically. After login, you'll be able to request or offer help based on your needs.";
+                }
+                // Admin dashboard
+                else if (lowerMsg.includes('admin') || lowerMsg.includes('dashboard')) {
+                    response = "The Admin Dashboard allows authorized users to view, filter, and manage all help requests and offers. Admins can also run the matching engine manually and export data. Access is restricted to admin users only.";
+                }
+                // Real-time features
+                else if (lowerMsg.includes('real-time') || lowerMsg.includes('live update')) {
+                    response = "ReliefLink Lite uses Supabase's real-time subscriptions to provide live updates. When new help requests or offers are submitted, all connected users will see the updates immediately without refreshing the page.";
+                }
+                // Map
+                else if (lowerMsg.includes('map')) {
+                    response = "The interactive map displays all help requests and offers geographically. You can view details by clicking on markers and see the spatial distribution of needs and available aid. The map helps with visual coordination of relief efforts.";
+                }
+                // Supabase
+                else if (lowerMsg.includes('supabase')) {
+                    response = "Supabase is our backend service providing database (PostgreSQL), authentication, and real-time functionality. It's securely configured with Row Level Security to protect user data while enabling powerful features.";
+                }
+                // Security
+                else if (lowerMsg.includes('security') || lowerMsg.includes('privacy')) {
+                    response = "Security features include: email/password auth, Row Level Security in Supabase, client-side input validation, and minimal data exposure. Users can only modify their own submissions, and sensitive operations require admin privileges.";
+                }
+                // Matching engine
+                else if (lowerMsg.includes('match') || lowerMsg.includes('engine')) {
+                    response = "Our rule-based matching engine pairs help requests with offers based on: category match, urgency level, geographic proximity, provider capacity, and availability. The admin can run matching manually from the dashboard.";
+                }
+                // Default response
+                else {
+                    response = "I'm here to help with ReliefLink Lite. You can ask about: requesting help, offering help, login/registration, admin features, real-time updates, the map view, security, or how the matching works. What would you like to know?";
+                }
+
+                setTimeout(() => {
+                    addBotMessage(response);
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
