@@ -1,4 +1,4 @@
-fetch('/chatbot.html')
+fetch('chatbot.html')
   .then(res => res.text())
   .then(html => {
     const wrapper = document.createElement('div');

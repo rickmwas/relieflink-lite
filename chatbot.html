@@ -212,129 +212,128 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const chatbotButton = document.getElementById('chatbotButton');
-            const chatbotWindow = document.getElementById('chatbotWindow');
-            const chatbotClose = document.getElementById('chatbotClose');
-            const chatbotMessages = document.getElementById('chatbotMessages');
-            const userInput = document.getElementById('userInput');
-            const sendButton = document.getElementById('sendButton');
+        // Removed DOMContentLoaded wrapper for dynamic injection compatibility
+        const chatbotButton = document.getElementById('chatbotButton');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
 
-            // Initial bot message
-            addBotMessage("Hello! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
+        // Initial bot message
+        addBotMessage("Hello! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
 
-            // Toggle chat window
-            chatbotButton.addEventListener('click', function() {
-                chatbotWindow.classList.toggle('active');
-            });
+        // Toggle chat window
+        chatbotButton.addEventListener('click', function() {
+            chatbotWindow.classList.toggle('active');
+        });
 
-            chatbotClose.addEventListener('click', function() {
-                chatbotWindow.classList.remove('active');
-            });
+        chatbotClose.addEventListener('click', function() {
+            chatbotWindow.classList.remove('active');
+        });
 
-            // Send message on button click or Enter key
-            sendButton.addEventListener('click', sendMessage);
-            userInput.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    sendMessage();
-                }
-            });
-
-            function sendMessage() {
-                const message = userInput.value.trim();
-                if (message) {
-                    addUserMessage(message);
-                    userInput.value = '';
-                    respondToMessage(message);
-                }
+        // Send message on button click or Enter key
+        sendButton.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
             }
+        });
 
-            function addUserMessage(text) {
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message) {
+                addUserMessage(message);
+                userInput.value = '';
+                respondToMessage(message);
+            }
+        }
+
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'user-message');
+            messageDiv.textContent = text;
+            chatbotMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        function addBotMessage(text) {
+            // Show typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.classList.add('typing-indicator');
+            typingIndicator.innerHTML = `
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            `;
+            chatbotMessages.appendChild(typingIndicator);
+            scrollToBottom();
+
+            // After a short delay, replace with actual message
+            setTimeout(() => {
+                chatbotMessages.removeChild(typingIndicator);
                 const messageDiv = document.createElement('div');
-                messageDiv.classList.add('message', 'user-message');
+                messageDiv.classList.add('message', 'bot-message');
                 messageDiv.textContent = text;
                 chatbotMessages.appendChild(messageDiv);
                 scrollToBottom();
+            }, 1000);
+        }
+
+        function scrollToBottom() {
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+
+        // Rule-based response system
+        function respondToMessage(message) {
+            const lowerMsg = message.toLowerCase();
+            let response = "";
+
+            // Help request related
+            if (lowerMsg.includes('request help') || lowerMsg.includes('need help')) {
+                response = "To request help, go to the 'Request Help' page and fill out the form with your details. You'll need to provide your name, contact info, type of help needed, urgency level, and location. The system will then match you with potential aid providers.";
+            }
+            // Offer help related
+            else if (lowerMsg.includes('offer help') || lowerMsg.includes('provide help') || lowerMsg.includes('aid provider')) {
+                response = "To offer help, visit the 'Offer Help' page and complete the provider registration form. You'll need to specify what type of help you can provide, your capacity, availability, and location. Once registered, our matching engine will connect you with those in need.";
+            }
+            // Login/registration
+            else if (lowerMsg.includes('login') || lowerMsg.includes('register') || lowerMsg.includes('sign up') || lowerMsg.includes('account')) {
+                response = "You can register or login using your email and password. The first user to register becomes the admin automatically. After login, you'll be able to request or offer help based on your needs.";
+            }
+            // Admin dashboard
+            else if (lowerMsg.includes('admin') || lowerMsg.includes('dashboard')) {
+                response = "The Admin Dashboard allows authorized users to view, filter, and manage all help requests and offers. Admins can also run the matching engine manually and export data. Access is restricted to admin users only.";
+            }
+            // Real-time features
+            else if (lowerMsg.includes('real-time') || lowerMsg.includes('live update')) {
+                response = "ReliefLink Lite uses Supabase's real-time subscriptions to provide live updates. When new help requests or offers are submitted, all connected users will see the updates immediately without refreshing the page.";
+            }
+            // Map
+            else if (lowerMsg.includes('map')) {
+                response = "The interactive map displays all help requests and offers geographically. You can view details by clicking on markers and see the spatial distribution of needs and available aid. The map helps with visual coordination of relief efforts.";
+            }
+            // Supabase
+            else if (lowerMsg.includes('supabase')) {
+                response = "Supabase is our backend service providing database (PostgreSQL), authentication, and real-time functionality. It's securely configured with Row Level Security to protect user data while enabling powerful features.";
+            }
+            // Security
+            else if (lowerMsg.includes('security') || lowerMsg.includes('privacy')) {
+                response = "Security features include: email/password auth, Row Level Security in Supabase, client-side input validation, and minimal data exposure. Users can only modify their own submissions, and sensitive operations require admin privileges.";
+            }
+            // Matching engine
+            else if (lowerMsg.includes('match') || lowerMsg.includes('engine')) {
+                response = "Our rule-based matching engine pairs help requests with offers based on: category match, urgency level, geographic proximity, provider capacity, and availability. The admin can run matching manually from the dashboard.";
+            }
+            // Default response
+            else {
+                response = "I'm here to help with ReliefLink Lite. You can ask about: requesting help, offering help, login/registration, admin features, real-time updates, the map view, security, or how the matching works. What would you like to know?";
             }
 
-            function addBotMessage(text) {
-                // Show typing indicator
-                const typingIndicator = document.createElement('div');
-                typingIndicator.classList.add('typing-indicator');
-                typingIndicator.innerHTML = `
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                    <div class="typing-dot"></div>
-                `;
-                chatbotMessages.appendChild(typingIndicator);
-                scrollToBottom();
-
-                // After a short delay, replace with actual message
-                setTimeout(() => {
-                    chatbotMessages.removeChild(typingIndicator);
-                    const messageDiv = document.createElement('div');
-                    messageDiv.classList.add('message', 'bot-message');
-                    messageDiv.textContent = text;
-                    chatbotMessages.appendChild(messageDiv);
-                    scrollToBottom();
-                }, 1000);
-            }
-
-            function scrollToBottom() {
-                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
-            }
-
-            // Rule-based response system
-            function respondToMessage(message) {
-                const lowerMsg = message.toLowerCase();
-                let response = "";
-
-                // Help request related
-                if (lowerMsg.includes('request help') || lowerMsg.includes('need help')) {
-                    response = "To request help, go to the 'Request Help' page and fill out the form with your details. You'll need to provide your name, contact info, type of help needed, urgency level, and location. The system will then match you with potential aid providers.";
-                }
-                // Offer help related
-                else if (lowerMsg.includes('offer help') || lowerMsg.includes('provide help') || lowerMsg.includes('aid provider')) {
-                    response = "To offer help, visit the 'Offer Help' page and complete the provider registration form. You'll need to specify what type of help you can provide, your capacity, availability, and location. Once registered, our matching engine will connect you with those in need.";
-                }
-                // Login/registration
-                else if (lowerMsg.includes('login') || lowerMsg.includes('register') || lowerMsg.includes('sign up') || lowerMsg.includes('account')) {
-                    response = "You can register or login using your email and password. The first user to register becomes the admin automatically. After login, you'll be able to request or offer help based on your needs.";
-                }
-                // Admin dashboard
-                else if (lowerMsg.includes('admin') || lowerMsg.includes('dashboard')) {
-                    response = "The Admin Dashboard allows authorized users to view, filter, and manage all help requests and offers. Admins can also run the matching engine manually and export data. Access is restricted to admin users only.";
-                }
-                // Real-time features
-                else if (lowerMsg.includes('real-time') || lowerMsg.includes('live update')) {
-                    response = "ReliefLink Lite uses Supabase's real-time subscriptions to provide live updates. When new help requests or offers are submitted, all connected users will see the updates immediately without refreshing the page.";
-                }
-                // Map
-                else if (lowerMsg.includes('map')) {
-                    response = "The interactive map displays all help requests and offers geographically. You can view details by clicking on markers and see the spatial distribution of needs and available aid. The map helps with visual coordination of relief efforts.";
-                }
-                // Supabase
-                else if (lowerMsg.includes('supabase')) {
-                    response = "Supabase is our backend service providing database (PostgreSQL), authentication, and real-time functionality. It's securely configured with Row Level Security to protect user data while enabling powerful features.";
-                }
-                // Security
-                else if (lowerMsg.includes('security') || lowerMsg.includes('privacy')) {
-                    response = "Security features include: email/password auth, Row Level Security in Supabase, client-side input validation, and minimal data exposure. Users can only modify their own submissions, and sensitive operations require admin privileges.";
-                }
-                // Matching engine
-                else if (lowerMsg.includes('match') || lowerMsg.includes('engine')) {
-                    response = "Our rule-based matching engine pairs help requests with offers based on: category match, urgency level, geographic proximity, provider capacity, and availability. The admin can run matching manually from the dashboard.";
-                }
-                // Default response
-                else {
-                    response = "I'm here to help with ReliefLink Lite. You can ask about: requesting help, offering help, login/registration, admin features, real-time updates, the map view, security, or how the matching works. What would you like to know?";
-                }
-
-                setTimeout(() => {
-                    addBotMessage(response);
-                }, 500);
-            }
-        });
+            setTimeout(() => {
+                addBotMessage(response);
+            }, 500);
+        }
     </script>
 </body>
 </html>
