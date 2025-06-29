@@ -221,7 +221,7 @@
         const sendButton = document.getElementById('sendButton');
 
         // Initial bot message
-        addBotMessage("Hello! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
+        addBotMessage("Jambo! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
 
         // Toggle chat window
         chatbotButton.addEventListener('click', function() {
@@ -257,7 +257,18 @@
             scrollToBottom();
         }
 
-        function addBotMessage(text) {
+        // User authentication awareness
+        function getCurrentUser() {
+            // Supabase auth awareness (if using Supabase)
+            if (window.supabase && window.supabase.auth) {
+                return window.supabase.auth.user();
+            }
+            // Fallback: check for user info in localStorage (customize as needed)
+            const user = localStorage.getItem('user');
+            return user ? JSON.parse(user) : null;
+        }
+
+        function addBotMessage(text, options = {}) {
             // Show typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.classList.add('typing-indicator');
@@ -277,6 +288,19 @@
                 messageDiv.textContent = text;
                 chatbotMessages.appendChild(messageDiv);
                 scrollToBottom();
+                // If options.authAware, append user info
+                if (options.authAware) {
+                    const user = getCurrentUser();
+                    const authDiv = document.createElement('div');
+                    authDiv.classList.add('message', 'bot-message');
+                    if (user) {
+                        authDiv.textContent = `You are logged in as ${user.email || user.name || 'user'}. Want to log out?`;
+                    } else {
+                        authDiv.textContent = `You are not logged in. Please log in to access more features.`;
+                    }
+                    chatbotMessages.appendChild(authDiv);
+                    scrollToBottom();
+                }
             }, 1000);
         }
 
@@ -288,6 +312,7 @@
         function respondToMessage(message) {
             const lowerMsg = message.toLowerCase();
             let response = "";
+            let authAware = false;
 
             // Help request related
             if (lowerMsg.includes('request help') || lowerMsg.includes('need help')) {
@@ -300,6 +325,7 @@
             // Login/registration
             else if (lowerMsg.includes('login') || lowerMsg.includes('register') || lowerMsg.includes('sign up') || lowerMsg.includes('account')) {
                 response = "You can register or login using your email and password. The first user to register becomes the admin automatically. After login, you'll be able to request or offer help based on your needs.";
+                authAware = true;
             }
             // Admin dashboard
             else if (lowerMsg.includes('admin') || lowerMsg.includes('dashboard')) {
@@ -329,9 +355,8 @@
             else {
                 response = "I'm here to help with ReliefLink Lite. You can ask about: requesting help, offering help, login/registration, admin features, real-time updates, the map view, security, or how the matching works. What would you like to know?";
             }
-
             setTimeout(() => {
-                addBotMessage(response);
+                addBotMessage(response, {authAware});
             }, 500);
         }
     </script>
