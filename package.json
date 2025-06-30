@@ -1,0 +1,25 @@
+{
+  "name": "test-app",
+  "version": "1.0.0",
+  "description": "A professional, mobile-first web application for emergency aid coordination that connects people in need with nearby aid providers through intelligent, rule-based matching.",
+  "main": "proxy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rickmwas/relieflink-lite.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rickmwas/relieflink-lite/issues"
+  },
+  "homepage": "https://github.com/rickmwas/relieflink-lite#readme",
+  "dependencies": {
+    "dotenv": "^17.0.0",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2"
+  }
+}
