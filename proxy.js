@@ -5,6 +5,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/api/ai', async (req, res) => {
+  console.log('Received:', req.body.inputs); // Add this line
   try {
     const response = await fetch('https://api-inference.huggingface.co/models/google/flan-t5-base', {
       method: 'POST',
@@ -21,4 +22,4 @@ app.post('/api/ai', async (req, res) => {
   }
 });
 
-app.listen(3000, () => console.log('Proxy running on http://localhost:3000'));
+app.listen(process.env.PORT || 3000, () => console.log('Proxy running'));

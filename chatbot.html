@@ -344,7 +344,7 @@
             } else {
                 addBotMessage('Let me think...');
                 // Fallback to deployed Railway proxy for Hugging Face AI model
-                const aiResponse = await fetch('https://relieflink-lite.railway.internal/api/ai', {
+                const aiResponse = await fetch('https://relieflink-lite-production.up.railway.app/api/ai', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ inputs: message })
