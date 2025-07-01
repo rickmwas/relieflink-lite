@@ -9,20 +9,26 @@
 </head>
 <body>
     <div class="container">
+        <!-- Language Toggle -->
+        <div class="language-toggle" style="text-align:right; margin: 1rem 0;">
+            <button id="lang-en" class="btn btn-sm btn-outline">English</button>
+            <button id="lang-sw" class="btn btn-sm btn-outline">Kiswahili</button>
+        </div>
+
         <!-- Header -->
         <header class="header">
             <div class="logo">
                 <i class="fas fa-hands-helping"></i>
-                <h1>ReliefLink Lite</h1>
+                <h1 data-i18n="ReliefLink Lite">ReliefLink Lite</h1>
             </div>
             <nav class="nav">
-                <a href="index.html" class="nav-link">Home</a>
-                <a href="admin.html" class="nav-link">Admin</a>
+                <a href="index.html" class="nav-link" data-i18n="Home">Home</a>
+                <a href="admin.html" class="nav-link" data-i18n="Admin">Admin</a>
                 <div id="auth-section">
-                    <button id="login-btn" class="btn btn-outline">Login</button>
+                    <button id="login-btn" class="btn btn-outline" data-i18n="Login">Login</button>
                     <div id="user-info" class="user-info hidden">
                         <span id="user-name"></span>
-                        <button id="logout-btn" class="btn btn-outline">Logout</button>
+                        <button id="logout-btn" class="btn btn-outline" data-i18n="Logout">Logout</button>
                     </div>
                 </div>
             </nav>
@@ -32,31 +38,31 @@
         <section class="map-controls">
             <div class="control-group">
                 <label class="control-label">
-                    <input type="checkbox" id="show-requests" checked> Show Requests
+                    <input type="checkbox" id="show-requests" checked> <span data-i18n="Show Requests">Show Requests</span>
                 </label>
                 <label class="control-label">
-                    <input type="checkbox" id="show-offers" checked> Show Offers
+                    <input type="checkbox" id="show-offers" checked> <span data-i18n="Show Offers">Show Offers</span>
                 </label>
                 <label class="control-label">
-                    <input type="checkbox" id="show-matches"> Show Matches
+                    <input type="checkbox" id="show-matches"> <span data-i18n="Show Matches">Show Matches</span>
                 </label>
             </div>
             <div class="control-group">
                 <select id="urgency-filter">
-                    <option value="all">All Urgency</option>
-                    <option value="critical">Critical</option>
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
+                    <option value="all" data-i18n="All Urgency">All Urgency</option>
+                    <option value="critical" data-i18n="Critical">Critical</option>
+                    <option value="high" data-i18n="High">High</option>
+                    <option value="medium" data-i18n="Medium">Medium</option>
+                    <option value="low" data-i18n="Low">Low</option>
                 </select>
                 <select id="category-filter">
-                    <option value="all">All Categories</option>
-                    <option value="food">Food & Water</option>
-                    <option value="medical">Medical</option>
-                    <option value="shelter">Shelter</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="transportation">Transportation</option>
-                    <option value="other">Other</option>
+                    <option value="all" data-i18n="All Categories">All Categories</option>
+                    <option value="food" data-i18n="Food & Water">Food & Water</option>
+                    <option value="medical" data-i18n="Medical">Medical</option>
+                    <option value="shelter" data-i18n="Shelter">Shelter</option>
+                    <option value="clothing" data-i18n="Clothing">Clothing</option>
+                    <option value="transportation" data-i18n="Transportation">Transportation</option>
+                    <option value="other" data-i18n="Other">Other</option>
                 </select>
             </div>
         </section>
@@ -66,48 +72,48 @@
             <div id="map" class="map-container">
                 <div class="map-placeholder">
                     <i class="fas fa-map-marked-alt"></i>
-                    <h3>Interactive Map</h3>
-                    <p>Map will load here when Google Maps API is configured</p>
-                    <button id="load-map-btn" class="btn btn-primary">Load Map</button>
+                    <h3 data-i18n="Interactive Map">Interactive Map</h3>
+                    <p data-i18n="Map will load here when Google Maps API is configured">Map will load here when Google Maps API is configured</p>
+                    <button id="load-map-btn" class="btn btn-primary" data-i18n="Load Map">Load Map</button>
                 </div>
             </div>
         </section>
 
         <!-- Map Legend -->
         <section class="map-legend">
-            <h3>Map Legend</h3>
+            <h3 data-i18n="Map Legend">Map Legend</h3>
             <div class="legend-items">
                 <div class="legend-item">
                     <div class="legend-icon request-icon"></div>
-                    <span>Help Requests</span>
+                    <span data-i18n="Help Requests">Help Requests</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-icon offer-icon"></div>
-                    <span>Help Offers</span>
+                    <span data-i18n="Help Offers">Help Offers</span>
                 </div>
                 <div class="legend-item">
                     <div class="legend-icon match-icon"></div>
-                    <span>Successful Matches</span>
+                    <span data-i18n="Successful Matches">Successful Matches</span>
                 </div>
             </div>
             <div class="urgency-legend">
-                <h4>Urgency Levels</h4>
+                <h4 data-i18n="Urgency Levels">Urgency Levels</h4>
                 <div class="urgency-items">
                     <div class="urgency-item">
                         <div class="urgency-color critical"></div>
-                        <span>Critical</span>
+                        <span data-i18n="Critical">Critical</span>
                     </div>
                     <div class="urgency-item">
                         <div class="urgency-color high"></div>
-                        <span>High</span>
+                        <span data-i18n="High">High</span>
                     </div>
                     <div class="urgency-item">
                         <div class="urgency-color medium"></div>
-                        <span>Medium</span>
+                        <span data-i18n="Medium">Medium</span>
                     </div>
                     <div class="urgency-item">
                         <div class="urgency-color low"></div>
-                        <span>Low</span>
+                        <span data-i18n="Low">Low</span>
                     </div>
                 </div>
             </div>
@@ -115,7 +121,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p>&copy; 2024 ReliefLink Lite by SwizCoders - Code with Impact</p>
+            <p>&copy; 2024 ReliefLink Lite <span data-i18n="by SwizCoders - Code with Impact">by SwizCoders - Code with Impact</span></p>
         </footer>
     </div>
 
@@ -130,18 +136,18 @@
                 <p id="info-description"></p>
                 <div class="info-details">
                     <div class="info-item">
-                        <strong>Contact:</strong> <span id="info-contact"></span>
+                        <strong data-i18n="Contact:">Contact:</strong> <span id="info-contact"></span>
                     </div>
                     <div class="info-item">
-                        <strong>Location:</strong> <span id="info-location"></span>
+                        <strong data-i18n="Location:">Location:</strong> <span id="info-location"></span>
                     </div>
                     <div class="info-item">
-                        <strong>Status:</strong> <span id="info-status"></span>
+                        <strong data-i18n="Status:">Status:</strong> <span id="info-status"></span>
                     </div>
                 </div>
             </div>
             <div class="info-actions">
-                <button class="btn btn-sm btn-primary" onclick="viewDetails()">View Details</button>
+                <button class="btn btn-sm btn-primary" onclick="viewDetails()" data-i18n="View Details">View Details</button>
             </div>
         </div>
     </div>
@@ -149,9 +155,11 @@
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay hidden">
         <div class="spinner"></div>
-        <p>Loading map data...</p>
+        <p data-i18n="Loading map data...">Loading map data...</p>
     </div>
 
+    <!-- Language Toggle Script -->
+    <script src="js/lang.js"></script>
     <!-- Supabase Configuration -->
     <script type="module" src="js/supabase-config.js"></script>
     
