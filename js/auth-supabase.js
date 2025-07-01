@@ -63,6 +63,27 @@ class AuthManager {
         if (registerForm) {
             registerForm.addEventListener('submit', (e) => this.handleRegister(e));
         }
+
+        // Google Sign-In button
+        const googleBtn = document.getElementById('google-signin-btn');
+        if (googleBtn) {
+            googleBtn.addEventListener('click', async () => {
+                try {
+                    showLoading('Redirecting to Google...');
+                    await window.auth.signInWithGoogle();
+                    hideLoading();
+                } catch (error) {
+                    hideLoading();
+                    alert('Google sign-in failed: ' + error.message);
+                }
+            });
+        }
+
+        // Admin login button in admin.html
+        const adminLoginBtn = document.getElementById('admin-login-btn');
+        if (adminLoginBtn) {
+            adminLoginBtn.addEventListener('click', () => this.showLoginModal());
+        }
     }
 
     setupAuthListener() {
@@ -158,6 +179,12 @@ class AuthManager {
                         </div>
                         <button type="submit" class="btn btn-primary">Register</button>
                     </form>
+
+                    <div class="google-divider"><span>or</span></div>
+                    <button id="google-signin-btn" class="btn-google-modal">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo" class="google-logo" />
+                        Sign in with Google
+                    </button>
                 </div>
             </div>
         `;
@@ -250,6 +277,52 @@ class AuthManager {
                     padding: 0.5rem;
                     border: 1px solid #ddd;
                     border-radius: 5px;
+                }
+
+                .google-divider {
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                    margin: 1.5rem 0 1rem 0;
+                }
+                
+                .google-divider span {
+                    flex: 1;
+                    border-bottom: 1px solid #ddd;
+                    line-height: 0.1em;
+                    margin: 0 10px;
+                    color: #888;
+                    font-size: 0.9em;
+                }
+                
+                .btn-google-modal {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 100%;
+                    background: #fff;
+                    color: #444;
+                    border: 1px solid #ddd;
+                    border-radius: 5px;
+                    font-size: 1rem;
+                    font-weight: 500;
+                    padding: 0.6rem 0;
+                    margin-top: 0.5rem;
+                    cursor: pointer;
+                    transition: box-shadow 0.2s;
+                    box-shadow: 0 1px 2px rgba(60,64,67,.08);
+                    gap: 10px;
+                }
+                
+                .btn-google-modal:hover {
+                    box-shadow: 0 2px 4px rgba(60,64,67,.15);
+                    border-color: #aaa;
+                }
+                
+                .google-logo {
+                    width: 22px;
+                    height: 22px;
+                    margin-right: 8px;
                 }
             </style>
         `;
@@ -387,6 +460,20 @@ class AuthManager {
             alert('Admin access required');
         } else {
             this.showLoginModal();
+        }
+    }
+
+    async makeMeAdmin() {
+        if (!this.currentUser) {
+            alert('You must be logged in to become admin.');
+            return;
+        }
+        try {
+            await window.database.setUserAsAdmin(this.currentUser.id);
+            this.isAdmin = true;
+            alert('You are now an admin! Reload the admin page.');
+        } catch (error) {
+            alert('Failed to set admin: ' + error.message);
         }
     }
 }

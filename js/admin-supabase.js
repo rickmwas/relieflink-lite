@@ -22,12 +22,22 @@ class AdminDashboard {
         try {
             // Wait for Supabase and auth to be ready
             await this.waitForSupabase();
+            // Wait for authManager to be ready and initialized
+            let attempts = 0;
+            while ((!window.authManager || !window.authManager.currentUser === undefined) && attempts < 50) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
+            // Wait for user session to be loaded
+            attempts = 0;
+            while ((window.authManager.currentUser === null && attempts < 50)) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+                attempts++;
+            }
             await this.checkAdminAccess();
-            
             this.setupEventListeners();
             await this.loadData();
             this.setupRealTimeUpdates();
-            
             console.log('Admin dashboard initialized with Supabase');
         } catch (error) {
             console.error('Admin initialization error:', error);
@@ -47,16 +57,34 @@ class AdminDashboard {
     }
 
     async checkAdminAccess() {
+        // Wait for authManager to be ready
+        let attempts = 0;
+        while ((!window.authManager || !window.authManager.getCurrentUser()) && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
         if (!window.authManager || !window.authManager.getCurrentUser()) {
             alert('Please sign in to access the admin dashboard');
             window.location.href = 'index.html';
             return;
         }
-
+        // Wait for admin status to be determined
+        attempts = 0;
+        while (window.authManager.isAdmin === undefined && attempts < 50) {
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
+        }
         if (!window.authManager.isUserAdmin()) {
-            alert('Admin access required');
-            window.location.href = 'index.html';
+            // Show message but do NOT redirect
+            alert('Admin access required. You are signed in, but do not have admin privileges.');
+            // Optionally, you can hide the dashboard and show a message in the UI here
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('admin-auth-check').classList.remove('hidden');
             return;
+        } else {
+            // Show dashboard
+            document.getElementById('admin-dashboard').classList.remove('hidden');
+            document.getElementById('admin-auth-check').classList.add('hidden');
         }
     }
 
@@ -110,13 +138,11 @@ class AdminDashboard {
     async loadData() {
         try {
             showLoading('Loading admin data...');
-            
             // Load all data from Supabase
             const [requests, offers] = await Promise.all([
                 window.database.getHelpRequests(),
                 window.database.getHelpOffers()
             ]);
-
             // Load matches
             let matches = [];
             try {
@@ -127,20 +153,20 @@ class AdminDashboard {
                         help_requests!inner(requester_name, help_category, urgency_level, location),
                         help_offers!inner(provider_name, provider_type, provider_location)
                     `);
-                
                 if (error) throw error;
                 matches = matchData || [];
             } catch (error) {
                 console.warn('Could not load matches:', error);
             }
-
-            this.data = { requests, offers, matches };
+            // Save loaded data to state
+            this.data.requests = requests || [];
+            this.data.offers = offers || [];
+            this.data.matches = matches || [];
+            // Render current tab
             this.renderCurrentTab();
             hideLoading();
-            
         } catch (error) {
             hideLoading();
-            console.error('Error loading admin data:', error);
             this.showError('Failed to load admin data');
         }
     }

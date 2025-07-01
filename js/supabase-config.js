@@ -237,6 +237,21 @@ class SupabaseAuth {
         }
     }
 
+    async signInWithGoogle() {
+        try {
+            const { error } = await supabase.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.origin
+                }
+            });
+            if (error) throw error;
+        } catch (error) {
+            console.error('Google sign-in error:', error);
+            throw error;
+        }
+    }
+
     async signOut() {
         try {
             const { error } = await supabase.auth.signOut()
