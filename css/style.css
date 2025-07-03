@@ -1121,37 +1121,47 @@ h1, h2, h3, h4, h5, h6 {
 }
 [data-theme="dark"] body,
 [data-theme="dark"] html {
+    background: #181a1b !important;
+    color: #f1f1f1 !important;
+}
+[data-theme="dark"] .container {
     background: #181a1b;
     color: #f1f1f1;
 }
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3,
-[data-theme="dark"] h4,
-[data-theme="dark"] h5,
-[data-theme="dark"] h6 {
+[data-theme="dark"] h1, [data-theme="dark"] h2, [data-theme="dark"] h3, [data-theme="dark"] h4, [data-theme="dark"] h5, [data-theme="dark"] h6 {
     color: #fff;
 }
-
-/* Card and container tweaks for dark mode */
-[data-theme="dark"] .card,
-[data-theme="dark"] .form-container,
-[data-theme="dark"] .activity-feed,
-[data-theme="dark"] .user-options-dropdown {
-    background: #23272a;
-    color: #f1f1f1;
+[data-theme="dark"] .card, [data-theme="dark"] .form-container, [data-theme="dark"] .modal, [data-theme="dark"] .activity-feed, [data-theme="dark"] .user-options-dropdown, [data-theme="dark"] .recent-activity, [data-theme="dark"] .dashboard-stats, [data-theme="dark"] .stat-card, [data-theme="dark"] .filter-section, [data-theme="dark"] .tabs-section, [data-theme="dark"] .table-container, [data-theme="dark"] .admin-table, [data-theme="dark"] .map-controls, [data-theme="dark"] .map-legend {
+    background: #23272a !important;
+    color: #f1f1f1 !important;
     box-shadow: 0 4px 20px rgba(0,0,0,0.6);
 }
-
-/* Button tweaks for better contrast */
-.btn,
-.btn-outline {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-weight: 600;
-    letter-spacing: 0.01em;
+[data-theme="dark"] .form-header h2, [data-theme="dark"] .form-header p, [data-theme="dark"] .form-group label, [data-theme="dark"] .stat-content h3, [data-theme="dark"] .stat-content p, [data-theme="dark"] .table-header h3, [data-theme="dark"] .activity-item, [data-theme="dark"] .admin-table th, [data-theme="dark"] .admin-table td {
+    color: #f1f1f1 !important;
 }
-[data-theme="dark"] .btn,
-[data-theme="dark"] .btn-outline {
+[data-theme="dark"] .form-group input,
+[data-theme="dark"] .form-group select,
+[data-theme="dark"] .form-group textarea {
+    background: #181a1b;
+    color: #f1f1f1;
+    border: 1.5px solid #444;
+}
+[data-theme="dark"] .form-group input:focus,
+[data-theme="dark"] .form-group select:focus,
+[data-theme="dark"] .form-group textarea:focus {
+    border-color: #b983ff;
+}
+[data-theme="dark"] .form-feedback.success {
+    background: #1e2d24;
+    color: #27ae60;
+    border-color: #27ae60;
+}
+[data-theme="dark"] .form-feedback.error {
+    background: #2d1818;
+    color: #e74c3c;
+    border-color: #e74c3c;
+}
+[data-theme="dark"] .btn, [data-theme="dark"] .btn-outline {
     background: #23272a;
     color: #f1f1f1;
     border-color: #444;
@@ -1180,19 +1190,40 @@ h1, h2, h3, h4, h5, h6 {
     background: #a259f7;
     color: #fff;
 }
-
-/* Inputs and dropdowns for dark mode */
-[data-theme="dark"] input,
-[data-theme="dark"] select,
-[data-theme="dark"] textarea {
-    background: #23272a;
-    color: #f1f1f1;
-    border: 1px solid #444;
+[data-theme="dark"] .checkbox-label:hover {
+    background-color: #23272a;
 }
-[data-theme="dark"] input:focus,
-[data-theme="dark"] select:focus,
-[data-theme="dark"] textarea:focus {
-    border-color: #b983ff;
+[data-theme="dark"] .modal {
+    background: #23272a !important;
+    color: #f1f1f1 !important;
+}
+[data-theme="dark"] .modal-content {
+    background: #23272a !important;
+    color: #f1f1f1 !important;
+}
+[data-theme="dark"] .loading-overlay {
+    background: rgba(24,26,27,0.95);
+}
+[data-theme="dark"] .stat-number {
+    color: #f1c40f;
+}
+[data-theme="dark"] .stat-label {
+    color: #f1f1f1;
+    opacity: 0.8;
+}
+[data-theme="dark"] .hero {
+    background: linear-gradient(135deg, #23272a 0%, #764ba2 100%);
+    color: #f1f1f1;
+}
+[data-theme="dark"] .hero p {
+    color: #f1f1f1;
+    opacity: 0.9;
+}
+[data-theme="dark"] .action-cards {
+    background: transparent;
+}
+[data-theme="dark"] .card:hover, [data-theme="dark"] .card:focus-within {
+    background: linear-gradient(120deg, #23272a 60%, #2d2d3a 100%) !important;
 }
 
 /* --- Accessibility Improvements --- */
