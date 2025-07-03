@@ -417,6 +417,31 @@ function hideLoading() {
     }
 }
 
+// Add ripple effect to action cards
+function addCardRippleEffect() {
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Remove any existing ripple
+            const oldRipple = card.querySelector('.ripple');
+            if (oldRipple) oldRipple.remove();
+            // Calculate position
+            const rect = card.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            // Create ripple
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            card.appendChild(ripple);
+            // Remove after animation
+            ripple.addEventListener('animationend', () => ripple.remove());
+        });
+    });
+}
+
 // Close modal with Escape key
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
@@ -434,6 +459,7 @@ window.addEventListener('beforeunload', () => {
 // Initialize app when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.reliefLinkApp = new ReliefLinkApp();
+    addCardRippleEffect();
 });
 
 console.log('ReliefLink Lite main app ready with Supabase backend');
