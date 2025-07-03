@@ -35,6 +35,7 @@
                     <button id="login-btn" class="btn btn-outline" data-i18n="Login">Login</button>
                     <div id="user-info" class="user-info hidden">
                         <span id="user-name"></span>
+                        <button id="options-btn" class="btn btn-outline" title="User Options"><i class="fas fa-cog"></i></button>
                         <button id="logout-btn" class="btn btn-outline" data-i18n="Logout">Logout</button>
                     </div>
                 </div>
@@ -113,6 +114,14 @@
             </div>
         </section>
 
+        <!-- User Options Dropdown -->
+        <div id="user-options-dropdown" class="user-options-dropdown hidden">
+            <label class="theme-toggle-label">
+                <input type="checkbox" id="theme-toggle"> Dark Mode
+            </label>
+            <!-- Add more user options here -->
+        </div>
+
         <!-- Footer -->
         <footer class="footer">
             <p>&copy; 2024 ReliefLink Lite <span data-i18n="by SwizCoders - Code with Impact">by SwizCoders - Code with Impact</span></p>
@@ -133,6 +142,6 @@
     <script src="js/main-supabase.js"></script>
     <script src="/js/load-chatbot.js" defer></script>
     <script src="js/lang.js"></script>
+    <script src="js/theme.js"></script>
 </body>
 </html>
-https://relieflink-lite.railway.internal/api/ai
