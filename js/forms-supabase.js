@@ -33,9 +33,14 @@ class FormsManager {
     }
 
     setupRequestForm() {
-        const requestForm = document.getElementById('help-request-form');
+        const requestForm = document.getElementById('request-help-form');
         if (requestForm) {
-            requestForm.addEventListener('submit', (e) => this.handleRequestSubmission(e));
+            requestForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Always hide loading overlay immediately on submit (defensive)
+                hideLoading();
+                setTimeout(() => this.handleRequestSubmission(e), 10);
+            });
         }
     }
 
@@ -53,8 +58,9 @@ class FormsManager {
         });
     }
 
-    async handleRequestSubmission(form) {
+    async handleRequestSubmission(e) {
         try {
+            const form = e.target;
             // Check if user is logged in
             if (!window.authManager || !window.authManager.getCurrentUser()) {
                 alert('Please sign in to submit a help request');
@@ -62,11 +68,11 @@ class FormsManager {
                 return;
             }
 
-            const formData = new FormData(form.target);
+            const formData = new FormData(form);
             const requestData = {
                 requester_id: window.authManager.getCurrentUser().id,
                 requester_name: formData.get('requesterName'),
-                phone_number: formData.get('phoneNumber'),
+                phone_number: formData.get('requesterPhone'),
                 help_category: formData.get('helpCategory'),
                 urgency_level: formData.get('urgencyLevel'),
                 description: formData.get('description'),
@@ -89,6 +95,7 @@ class FormsManager {
                 return;
             }
 
+            // Only show loading after validation passes
             showLoading('Submitting your help request...');
 
             // Submit to Supabase
@@ -104,7 +111,7 @@ class FormsManager {
             );
 
             // Reset form
-            form.target.reset();
+            form.reset();
 
             // Log activity
             this.logActivity('request_created', `New ${requestData.urgency_level} urgency ${requestData.help_category} request in ${requestData.location}`, savedRequest.id);
@@ -420,6 +427,11 @@ class FormsManager {
 // Initialize forms manager when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.formsManager = new FormsManager();
+});
+
+// Defensive: Always hide loading overlay on page load
+window.addEventListener('DOMContentLoaded', () => {
+    hideLoading();
 });
 
 console.log('Supabase Forms system ready for ReliefLink Lite');
