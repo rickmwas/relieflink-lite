@@ -108,10 +108,18 @@ class MapManager {
     async loadGoogleMaps() {
         try {
             showLoading('Loading Google Maps...');
-            
+            let timeout = setTimeout(() => {
+                hideLoading();
+                this.showMapPlaceholder();
+            }, 8000); // fallback after 8 seconds
             // Try to initialize map
-            if (typeof google !== 'undefined' && google.maps) {
+            if (typeof google !== 'undefined' && google.maps && this.getGoogleMapsApiKey() !== 'YOUR_GOOGLE_MAPS_API_KEY') {
                 this.initializeMap();
+                clearTimeout(timeout);
+                hideLoading();
+            } else if (this.getGoogleMapsApiKey() === 'YOUR_GOOGLE_MAPS_API_KEY') {
+                hideLoading();
+                this.showMapPlaceholder();
             } else {
                 // Load Google Maps API dynamically
                 const script = document.createElement('script');
@@ -119,14 +127,13 @@ class MapManager {
                 script.async = true;
                 script.defer = true;
                 document.head.appendChild(script);
-
                 // Set global callback
                 window.initMap = () => {
+                    clearTimeout(timeout);
                     this.initializeMap();
+                    hideLoading();
                 };
             }
-            
-            hideLoading();
         } catch (error) {
             console.error('Error loading Google Maps:', error);
             hideLoading();
