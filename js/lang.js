@@ -48,6 +48,10 @@ const translations = {
     'Recent Activity': 'Recent Activity',
     'Welcome to ReliefLink Lite. Start by requesting or offering help.': 'Welcome to ReliefLink Lite. Start by requesting or offering help.',
     'Loading...': 'Loading...',
+    'Emergency Aid Coordination Made Simple': 'Emergency Aid Coordination Made Simple',
+    'Connect people in need with nearby aid providers through intelligent, rule-based matching.': 'Connect people in need with nearby aid providers through intelligent, rule-based matching.',
+    'Active Requests': 'Active Requests',
+    'Available Offers': 'Available Offers',
   },
   sw: {
     'ReliefLink Lite': 'ReliefLink Lite',
@@ -97,6 +101,10 @@ const translations = {
     'Recent Activity': 'Shughuli za Hivi Karibuni',
     'Welcome to ReliefLink Lite. Start by requesting or offering help.': 'Karibu ReliefLink Lite. Anza kwa kuomba au kutoa msaada.',
     'Loading...': 'Inapakia...',
+    'Emergency Aid Coordination Made Simple': 'Urushaji wa Msaada wa Dharura Umerahisishwa',
+    'Connect people in need with nearby aid providers through intelligent, rule-based matching.': 'Unganisha watu wanaohitaji msaada na watoa msaada wa karibu kupitia ulinganishaji wa kisasa.',
+    'Active Requests': 'Maombi Hai',
+    'Available Offers': 'Ofa Zinazopatikana',
   }
 };
 
