@@ -279,7 +279,9 @@ class FormsManager {
                 <h3>Success!</h3>
                 <p>${message}</p>
                 <div class="success-details">
-                    <p><strong>Reference ID:</strong> ${id.substr(0, 8)}</p>
+                    <p><strong>Reference ID:</strong> <span id="success-ref-id">${id.substr(0, 8)}</span>
+                        <button class="btn btn-sm btn-outline" id="copy-ref-id-btn" title="Copy Reference ID"><i class="fas fa-copy"></i></button>
+                    </p>
                     <p>Keep this ID for your records</p>
                 </div>
                 <div class="modal-actions">
@@ -291,10 +293,28 @@ class FormsManager {
                 </div>
             </div>
         `;
-        
         modal.style.display = 'flex';
         document.body.appendChild(modal);
-        
+
+        // Copy to clipboard handler
+        setTimeout(() => {
+            const copyBtn = document.getElementById('copy-ref-id-btn');
+            const refIdSpan = document.getElementById('success-ref-id');
+            if (copyBtn && refIdSpan) {
+                copyBtn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(refIdSpan.textContent)
+                        .then(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                                copyBtn.classList.remove('copied');
+                            }, 1500);
+                        });
+                });
+            }
+        }, 100);
+
         // Auto-close after 10 seconds
         setTimeout(() => {
             modal.remove();
