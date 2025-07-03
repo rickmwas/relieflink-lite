@@ -147,5 +147,13 @@
     <script src="js/matching.js"></script>
     <script src="/js/load-chatbot.js" defer></script>
 
+    <script>
+      // Redirect from .html to clean URL
+      if (window.location.pathname.match(/\/(\w+)\.html$/)) {
+        const clean = window.location.pathname.replace(/\.html$/, '');
+        window.history.replaceState({}, '', clean + window.location.search + window.location.hash);
+      }
+    </script>
+
 </body>
 </html>
