@@ -702,6 +702,26 @@ h1, h2, h3, h4, h5, h6 {
     color: white;
 }
 
+/* Highlight urgent cases in admin tables */
+.admin-table td.urgency-critical, .admin-table td.status-pending {
+    background: #fff0f0;
+    color: #c0392b;
+    font-weight: 700;
+}
+.admin-table td.urgency-high {
+    background: #fff7e6;
+    color: #e67e22;
+    font-weight: 600;
+}
+.admin-table td.urgency-medium {
+    background: #f9fbe7;
+    color: #f1c40f;
+}
+.admin-table td.urgency-low {
+    background: #eafaf1;
+    color: #27ae60;
+}
+
 /* Map Styles */
 .map-controls {
     background: white;
