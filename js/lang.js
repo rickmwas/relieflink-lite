@@ -147,3 +147,11 @@ setLanguage(lang);
 // For testing: force language
 // setLanguage('en');
 // setLanguage('sw');
+
+// Attach event listeners for language toggle buttons
+window.addEventListener('DOMContentLoaded', function() {
+  const enBtn = document.getElementById('lang-en');
+  const swBtn = document.getElementById('lang-sw');
+  if (enBtn) enBtn.addEventListener('click', () => setLanguage('en'));
+  if (swBtn) swBtn.addEventListener('click', () => setLanguage('sw'));
+});
