@@ -392,6 +392,13 @@ class AuthManager {
 
     async logout() {
         try {
+            // Check for a valid session before attempting logout
+            const { data: { session } } = await supabase.auth.getSession();
+            if (!session) {
+                alert('You are already logged out.');
+                this.updateUI();
+                return;
+            }
             await window.auth.signOut();
             
             // Redirect to home if on admin page
