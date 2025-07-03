@@ -37,9 +37,10 @@
 
         <!-- Hero Section -->
         <section class="hero">
+            <canvas id="network-bg" class="network-bg"></canvas>
             <div class="hero-content">
-                <h2 data-i18n="Emergency Aid Coordination Made Simple">Emergency Aid Coordination Made Simple</h2>
-                <p data-i18n="Connect people in need with nearby aid providers through intelligent, rule-based matching.">Connect people in need with nearby aid providers through intelligent, rule-based matching.</p>
+                <h2 data-i18n="Emergency Aid Coordination Made Simple" style="opacity:0;transform:translateY(30px);">Emergency Aid Coordination Made Simple</h2>
+                <p data-i18n="Connect people in need with nearby aid providers through intelligent, rule-based matching." style="opacity:0;transform:translateY(30px);">Connect people in need with nearby aid providers through intelligent, rule-based matching.</p>
                 <div class="hero-stats">
                     <div class="stat">
                         <span class="stat-number" id="total-requests">0</span>
@@ -137,12 +138,6 @@
     <script src="js/lang.js"></script>
     <script src="js/theme.js"></script>
     <script src="js/onboarding.js"></script>
-    <script>
-      // Hide loading overlay when DOM is ready
-      document.addEventListener('DOMContentLoaded', function() {
-        var loadingDiv = document.getElementById('loading-overlay');
-        if (loadingDiv) loadingDiv.classList.add('hidden');
-      });
-    </script>
+    <script src="js/hero-visual.js"></script>
 </body>
 </html>

@@ -148,16 +148,17 @@ function translatePage(lang) {
 }
 
 // Auto-detect language or use default
-const userLang = navigator.language || navigator.userLanguage;
-const lang = userLang.startsWith('sw') ? 'sw' : 'en';
-setLanguage(lang);
+function getSavedOrDefaultLang() {
+  const saved = localStorage.getItem('lang');
+  if (saved && (saved === 'en' || saved === 'sw')) return saved;
+  const userLang = navigator.language || navigator.userLanguage;
+  return userLang.startsWith('sw') ? 'sw' : 'en';
+}
 
-// For testing: force language
-// setLanguage('en');
-// setLanguage('sw');
-
-// Attach event listeners for language toggle buttons
 window.addEventListener('DOMContentLoaded', function() {
+  const lang = getSavedOrDefaultLang();
+  translatePage(lang);
+  // Attach event listeners for language toggle buttons
   const enBtn = document.getElementById('lang-en');
   const swBtn = document.getElementById('lang-sw');
   if (enBtn) enBtn.addEventListener('click', () => setLanguage('en'));

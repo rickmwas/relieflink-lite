@@ -6,7 +6,6 @@
     <title>Map View - ReliefLink Lite</title>
     <link rel="stylesheet" href="css/style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
     <div class="container">
@@ -70,7 +69,14 @@
 
         <!-- Map Container -->
         <section class="map-section">
-            <div id="map" class="map-container" style="height: 400px; width: 100%;"></div>
+            <div id="map" class="map-container">
+                <div class="map-placeholder">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <h3 data-i18n="Interactive Map">Interactive Map</h3>
+                    <p data-i18n="Map will load here when Google Maps API is configured">Map will load here when Google Maps API is configured</p>
+                    <button id="load-map-btn" class="btn btn-primary" data-i18n="Load Map">Load Map</button>
+                </div>
+            </div>
         </section>
 
         <!-- Map Legend -->
@@ -170,19 +176,6 @@
         const clean = window.location.pathname.replace(/\.html$/, '');
         window.history.replaceState({}, '', clean + window.location.search + window.location.hash);
       }
-    </script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-      // Initialize Leaflet map
-      document.addEventListener('DOMContentLoaded', function() {
-        var map = L.map('map').setView([0, 0], 2);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-        // Hide loading overlay when map is ready
-        var loadingDiv = document.getElementById('loading-overlay');
-        if (loadingDiv) loadingDiv.classList.add('hidden');
-      });
     </script>
 
 </body>

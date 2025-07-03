@@ -139,9 +139,6 @@
                         <textarea id="additional-info" name="additionalInfo" rows="3" placeholder="Any additional details about your offer..."></textarea>
                     </div>
 
-                    <input type="hidden" id="latitude" name="latitude">
-                    <input type="hidden" id="longitude" name="longitude">
-
                     <div class="form-actions">
                         <button type="submit" class="btn btn-secondary">
                             <i class="fas fa-heart"></i> Register Offer
@@ -185,8 +182,6 @@
         <p>Registering offer...</p>
     </div>
 
-    <!-- Theme Script -->
-    <script src="js/theme.js"></script>
     <!-- Supabase Configuration -->
     <script type="module" src="js/supabase-config.js"></script>
     
@@ -195,6 +190,7 @@
     <script src="js/forms-supabase.js"></script>
     <script src="js/matching.js"></script>
     <script src="/js/load-chatbot.js" defer></script>
+    <script src="js/lang.js"></script>
 
     <script>
       // Redirect from .html to clean URL
@@ -202,54 +198,6 @@
         const clean = window.location.pathname.replace(/\.html$/, '');
         window.history.replaceState({}, '', clean + window.location.search + window.location.hash);
       }
-    </script>
-
-    <script>
-      // Autofill user location in hidden fields
-      document.addEventListener('DOMContentLoaded', function() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            document.getElementById('latitude').value = position.coords.latitude;
-            document.getElementById('longitude').value = position.coords.longitude;
-          }, function(error) {
-            console.warn('Geolocation error:', error.message);
-          });
-        } else {
-          console.warn('Geolocation is not supported by this browser.');
-        }
-      });
-    </script>
-
-    <script>
-    // Use My Location for Offer Help (with reverse geocoding)
-    const getLocationBtnOffer = document.getElementById('get-location-btn');
-    if (getLocationBtnOffer) {
-      getLocationBtnOffer.addEventListener('click', function() {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(function(position) {
-            document.getElementById('latitude').value = position.coords.latitude;
-            document.getElementById('longitude').value = position.coords.longitude;
-            // Reverse geocoding to get address
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${position.coords.latitude}&lon=${position.coords.longitude}`)
-              .then(response => response.json())
-              .then(data => {
-                if (data.display_name) {
-                  document.getElementById('provider-location').value = data.display_name;
-                } else {
-                  document.getElementById('provider-location').value = `Lat: ${position.coords.latitude}, Lng: ${position.coords.longitude}`;
-                }
-              })
-              .catch(() => {
-                document.getElementById('provider-location').value = `Lat: ${position.coords.latitude}, Lng: ${position.coords.longitude}`;
-              });
-          }, function(error) {
-            alert('Unable to retrieve your location. Please allow location access.');
-          });
-        } else {
-          alert('Geolocation is not supported by your browser.');
-        }
-      });
-    }
     </script>
 
 </body>
