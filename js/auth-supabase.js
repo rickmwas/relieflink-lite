@@ -546,7 +546,9 @@ function hideLoading() {
     }
 }
 
-function navigateTo(url) {
+function navigateTo(page) {
+    // Hide .html extension from users, but route to correct file
+    const url = page.endsWith('.html') ? page : `${page}.html`;
     window.location.href = url;
 }
 

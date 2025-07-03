@@ -1,11 +1,11 @@
 {
   "rewrites": [
     { "source": "/", "destination": "/index.html" },
+    { "source": "/map", "destination": "/map.html" },
+    { "source": "/admin", "destination": "/admin.html" },
     { "source": "/offer-help", "destination": "/offer-help.html" },
     { "source": "/request-help", "destination": "/request-help.html" },
-    { "source": "/admin", "destination": "/admin.html" },
-    { "source": "/map", "destination": "/map.html" },
-    { "source": "/download", "destination": "/download.html" },
-    { "source": "/chatbot", "destination": "/chatbot.html" }
+    { "source": "/chatbot", "destination": "/chatbot.html" },
+    { "source": "/download", "destination": "/download.html" }
   ]
 }
