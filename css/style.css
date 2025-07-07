@@ -1461,3 +1461,32 @@ h1, h2, h3, h4, h5, h6 {
         max-width: 98vw;
     }
 }
+
+/* Quick Contact Buttons */
+.quick-contact {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin: 2rem 0 1rem 0;
+}
+.whatsapp-btn, .sms-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #25D366;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.sms-btn {
+  background: #0078FF;
+}
+.whatsapp-btn:hover {
+  background: #128C7E;
+}
+.sms-btn:hover {
+  background: #005fa3;
+}

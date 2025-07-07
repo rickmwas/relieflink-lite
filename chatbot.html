@@ -428,9 +428,11 @@
             if (option === 'support') {
                 userText = lang === 'sw' ? 'Ongea na Msaada' : 'Talk to Support';
                 response = lang === 'sw'
-                  ? "Tafadhali tuma barua pepe kwa support@relieflink.com au tumia fomu ya mawasiliano."
-                  : "Please email support@relieflink.com or use the contact form for further assistance.";
+                  ? "Tafadhali tuma barua pepe kwa support@relieflink.com au tumia fomu ya mawasiliano. Unaweza pia kutumia WhatsApp au SMS kwa msaada wa haraka."
+                  : "Please email support@relieflink.com or use the contact form for further assistance. You can also use WhatsApp or SMS for quick help.";
                 followUp = [
+                  { icon: '<i class="fab fa-whatsapp"></i>', label: lang === 'sw' ? 'WhatsApp' : 'WhatsApp', onClick: () => { window.open('https://wa.me/254113242983?text=I%20need%20emergency%20assistance%20via%20ReliefLink%20Lite', '_blank'); } },
+                  { icon: '<i class="fas fa-sms"></i>', label: lang === 'sw' ? 'SMS' : 'SMS', onClick: () => { window.open('sms:+254113242983?body=I%20need%20emergency%20assistance%20via%20ReliefLink%20Lite'); } },
                   { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
                 ];
             }
