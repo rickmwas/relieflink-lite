@@ -249,6 +249,28 @@
             background-color: #BB0000;
             color: #fff;
         }
+
+        /* Add styles for chatbot option buttons */
+        .chatbot-options {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0 0.5rem 0;
+            flex-wrap: wrap;
+        }
+        .chatbot-option-btn {
+            background: var(--kenya-green);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.5rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            margin-bottom: 0.5rem;
+        }
+        .chatbot-option-btn:hover {
+            background: var(--kenya-red);
+        }
     </style>
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -281,7 +303,7 @@
       }
     </script>
     <script>
-        // Removed DOMContentLoaded wrapper for dynamic injection compatibility
+        // --- Chatbot Option Button Logic ---
         const chatbotButton = document.getElementById('chatbotButton');
         const chatbotWindow = document.getElementById('chatbotWindow');
         const chatbotClose = document.getElementById('chatbotClose');
@@ -289,10 +311,139 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
 
-        // Initial bot message
-        addBotMessage("Jambo! I'm ReliefBot, your assistant for ReliefLink Lite. How can I help you today? You can ask about: requesting help, offering help, login/registration, admin dashboard, real-time features, map, or security.");
+        // Store language in sessionStorage
+        function setChatbotLang(lang) {
+            sessionStorage.setItem('chatbotLang', lang);
+        }
+        function getChatbotLang() {
+            return sessionStorage.getItem('chatbotLang') || 'en';
+        }
 
-        // Toggle chat window
+        // Option button rendering
+        function renderOptions(options) {
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'chatbot-options';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'chatbot-option-btn';
+                btn.innerHTML = opt.icon ? `${opt.icon} ${opt.label}` : opt.label;
+                btn.onclick = () => opt.onClick();
+                optionsDiv.appendChild(btn);
+            });
+            chatbotMessages.appendChild(optionsDiv);
+            scrollToBottom();
+        }
+
+        // Remove all option buttons
+        function removeOptions() {
+            document.querySelectorAll('.chatbot-options').forEach(el => el.remove());
+        }
+
+        // Main menu options
+        function showMainMenu() {
+            const lang = getChatbotLang();
+            addBotMessage(lang === 'sw' ? 'Chagua unachotaka kufanya:' : 'What would you like to do next?');
+            renderOptions([
+                { icon: '🤲', label: lang === 'sw' ? 'Omba Msaada' : 'Request Help', onClick: () => handleMainOption('request') },
+                { icon: '❤️', label: lang === 'sw' ? 'Toa Msaada' : 'Offer Help', onClick: () => handleMainOption('offer') },
+                { icon: '🗺️', label: lang === 'sw' ? 'Tazama Ramani' : 'View Map', onClick: () => handleMainOption('map') },
+                { icon: '🛠️', label: lang === 'sw' ? 'Dashibodi ya Msimamizi' : 'Admin Dashboard', onClick: () => handleMainOption('admin') },
+                { icon: '👨‍💬', label: lang === 'sw' ? 'Ongea na Msaada' : 'Talk to Support', onClick: () => handleMainOption('support') }
+            ]);
+        }
+
+        // Initial bot message with language options
+        function startConversation() {
+            chatbotMessages.innerHTML = '';
+            addBotMessage("Hey! Let's get started. First, choose your language:", { noScroll: true });
+            renderOptions([
+                { label: 'English', onClick: () => selectLanguage('en') },
+                { label: 'Kiswahili', onClick: () => selectLanguage('sw') }
+            ]);
+        }
+
+        function selectLanguage(lang) {
+            setChatbotLang(lang);
+            removeOptions();
+            addBotMessage(lang === 'sw' ? 'Umechagua Kiswahili! Chagua unachotaka kufanya:' : 'Awesome! What would you like to do today?');
+            renderOptions([
+                { icon: '🤲', label: lang === 'sw' ? 'Omba Msaada' : 'Request Help', onClick: () => handleMainOption('request') },
+                { icon: '❤️', label: lang === 'sw' ? 'Toa Msaada' : 'Offer Help', onClick: () => handleMainOption('offer') },
+                { icon: '🗺️', label: lang === 'sw' ? 'Tazama Ramani' : 'View Map', onClick: () => handleMainOption('map') },
+                { icon: '🛠️', label: lang === 'sw' ? 'Dashibodi ya Msimamizi' : 'Admin Dashboard', onClick: () => handleMainOption('admin') },
+                { icon: '👨‍💬', label: lang === 'sw' ? 'Ongea na Msaada' : 'Talk to Support', onClick: () => handleMainOption('support') }
+            ]);
+        }
+
+        function handleMainOption(option) {
+            removeOptions();
+            const lang = getChatbotLang();
+            let userText = '';
+            let response = '';
+            let followUp = [];
+            if (option === 'request') {
+                userText = lang === 'sw' ? 'Omba Msaada' : 'Request Help';
+                response = lang === 'sw'
+                  ? "Ili kuomba msaada, nenda kwenye ukurasa wa 'Omba Msaada' na jaza fomu."
+                  : "To request help, go to the 'Request Help' page and fill out the form with your details. You'll need to provide your name, contact info, type of help needed, urgency level, and location. The system will then match you with potential aid providers.";
+                followUp = [
+                  { icon: '❤️', label: lang === 'sw' ? 'Toa Msaada' : 'Offer Help', onClick: () => handleMainOption('offer') },
+                  { icon: '🗺️', label: lang === 'sw' ? 'Tazama Ramani' : 'View Map', onClick: () => handleMainOption('map') },
+                  { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
+                ];
+            }
+            if (option === 'offer') {
+                userText = lang === 'sw' ? 'Toa Msaada' : 'Offer Help';
+                response = lang === 'sw'
+                  ? "Ili kutoa msaada, tembelea ukurasa wa 'Toa Msaada' na jaza fomu ya mtoa msaada."
+                  : "To offer help, visit the 'Offer Help' page and complete the provider registration form. You'll need to specify what type of help you can provide, your capacity, availability, and location. Once registered, our matching engine will connect you with those in need.";
+                followUp = [
+                  { icon: '🤲', label: lang === 'sw' ? 'Omba Msaada' : 'Request Help', onClick: () => handleMainOption('request') },
+                  { icon: '🗺️', label: lang === 'sw' ? 'Tazama Ramani' : 'View Map', onClick: () => handleMainOption('map') },
+                  { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
+                ];
+            }
+            if (option === 'map') {
+                userText = lang === 'sw' ? 'Tazama Ramani' : 'View Map';
+                response = lang === 'sw'
+                  ? "Ramani inaonyesha maombi na ofa zote za msaada kijiografia. Bonyeza alama kuona maelezo zaidi."
+                  : "The interactive map displays all help requests and offers geographically. You can view details by clicking on markers and see the spatial distribution of needs and available aid. The map helps with visual coordination of relief efforts.";
+                followUp = [
+                  { icon: '🤲', label: lang === 'sw' ? 'Omba Msaada' : 'Request Help', onClick: () => handleMainOption('request') },
+                  { icon: '❤️', label: lang === 'sw' ? 'Toa Msaada' : 'Offer Help', onClick: () => handleMainOption('offer') },
+                  { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
+                ];
+            }
+            if (option === 'admin') {
+                userText = lang === 'sw' ? 'Dashibodi ya Msimamizi' : 'Admin Dashboard';
+                response = lang === 'sw'
+                  ? "Dashibodi ya msimamizi inaruhusu kusimamia maombi na ofa zote. Ni kwa wasimamizi pekee."
+                  : "The Admin Dashboard allows authorized users to view, filter, and manage all help requests and offers. Admins can also run the matching engine manually and export data. Access is restricted to admin users only.";
+                followUp = [
+                  { icon: '🤲', label: lang === 'sw' ? 'Omba Msaada' : 'Request Help', onClick: () => handleMainOption('request') },
+                  { icon: '❤️', label: lang === 'sw' ? 'Toa Msaada' : 'Offer Help', onClick: () => handleMainOption('offer') },
+                  { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
+                ];
+            }
+            if (option === 'support') {
+                userText = lang === 'sw' ? 'Ongea na Msaada' : 'Talk to Support';
+                response = lang === 'sw'
+                  ? "Tafadhali tuma barua pepe kwa support@relieflink.com au tumia fomu ya mawasiliano."
+                  : "Please email support@relieflink.com or use the contact form for further assistance.";
+                followUp = [
+                  { icon: '🔙', label: lang === 'sw' ? 'Menyu Kuu' : 'Main Menu', onClick: showMainMenu }
+                ];
+            }
+            addUserMessage(userText);
+            setTimeout(() => {
+                addBotMessage(response);
+                renderOptions(followUp);
+            }, 500);
+        }
+
+        // --- Existing chatbot logic below ---
+        startConversation();
+
         chatbotButton.addEventListener('click', function() {
             chatbotWindow.classList.toggle('active');
         });
@@ -301,7 +452,6 @@
             chatbotWindow.classList.remove('active');
         });
 
-        // Send message on button click or Enter key
         sendButton.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -326,37 +476,23 @@
             scrollToBottom();
         }
 
-        // User authentication awareness
-        function getCurrentUser() {
-            // Supabase auth awareness (if using Supabase)
-            if (window.supabase && window.supabase.auth) {
-                return window.supabase.auth.user();
-            }
-            // Fallback: check for user info in localStorage (customize as needed)
-            const user = localStorage.getItem('user');
-            return user ? JSON.parse(user) : null;
-        }
-
         function addBotMessage(text, options = {}) {
-            // Show typing indicator
             const typingIndicator = document.createElement('div');
             typingIndicator.classList.add('typing-indicator');
             typingIndicator.innerHTML = `
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
+                <div class=\"typing-dot\"></div>
+                <div class=\"typing-dot\"></div>
+                <div class=\"typing-dot\"></div>
             `;
             chatbotMessages.appendChild(typingIndicator);
-            scrollToBottom();
-
-            // After a short delay, replace with actual message
+            if (!options.noScroll) scrollToBottom();
             setTimeout(() => {
                 chatbotMessages.removeChild(typingIndicator);
                 const messageDiv = document.createElement('div');
                 messageDiv.classList.add('message', 'bot-message');
                 messageDiv.textContent = text;
                 chatbotMessages.appendChild(messageDiv);
-                scrollToBottom();
+                if (!options.noScroll) scrollToBottom();
                 // If options.authAware, append user info
                 if (options.authAware) {
                     const user = getCurrentUser();
@@ -368,7 +504,7 @@
                         authDiv.textContent = `You are not logged in. Please log in to access more features.`;
                     }
                     chatbotMessages.appendChild(authDiv);
-                    scrollToBottom();
+                    if (!options.noScroll) scrollToBottom();
                 }
             }, 1000);
         }
@@ -377,52 +513,10 @@
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }
 
-        // Rule-based response system
+        // Rule-based response system ONLY (AI fallback removed)
         async function respondToMessage(message) {
-            const lowerMsg = message.toLowerCase();
-            let response = "";
-            let ruleMatched = true;
-
-            // Rule-based logic
-            if (lowerMsg.includes('request help') || lowerMsg.includes('need help')) {
-                response = "To request help, go to the 'Request Help' page and fill out the form with your details. You'll need to provide your name, contact info, type of help needed, urgency level, and location. The system will then match you with potential aid providers.";
-            } else if (lowerMsg.includes('offer help') || lowerMsg.includes('provide help') || lowerMsg.includes('aid provider')) {
-                response = "To offer help, visit the 'Offer Help' page and complete the provider registration form. You'll need to specify what type of help you can provide, your capacity, availability, and location. Once registered, our matching engine will connect you with those in need.";
-            } else if (lowerMsg.includes('login') || lowerMsg.includes('register') || lowerMsg.includes('sign up') || lowerMsg.includes('account')) {
-                response = "You can register or login using your email and password. The first user to register becomes the admin automatically. After login, you'll be able to request or offer help based on your needs.";
-            } else if (lowerMsg.includes('admin') || lowerMsg.includes('dashboard')) {
-                response = "The Admin Dashboard allows authorized users to view, filter, and manage all help requests and offers. Admins can also run the matching engine manually and export data. Access is restricted to admin users only.";
-            } else if (lowerMsg.includes('real-time') || lowerMsg.includes('live update')) {
-                response = "ReliefLink Lite uses Supabase's real-time subscriptions to provide live updates. When new help requests or offers are submitted, all connected users will see the updates immediately without refreshing the page.";
-            } else if (lowerMsg.includes('map')) {
-                response = "The interactive map displays all help requests and offers geographically. You can view details by clicking on markers and see the spatial distribution of needs and available aid. The map helps with visual coordination of relief efforts.";
-            } else if (lowerMsg.includes('supabase')) {
-                response = "Supabase is our backend service providing database (PostgreSQL), authentication, and real-time functionality. It's securely configured with Row Level Security to protect user data while enabling powerful features.";
-            } else if (lowerMsg.includes('security') || lowerMsg.includes('privacy')) {
-                response = "Security features include: email/password auth, Row Level Security in Supabase, client-side input validation, and minimal data exposure. Users can only modify their own submissions, and sensitive operations require admin privileges.";
-            } else if (lowerMsg.includes('match') || lowerMsg.includes('engine')) {
-                response = "Our rule-based matching engine pairs help requests with offers based on: category match, urgency level, geographic proximity, provider capacity, and availability. The admin can run matching manually from the dashboard.";
-            } else {
-                ruleMatched = false;
-            }
-
-            if (ruleMatched) {
-                setTimeout(() => {
-                    addBotMessage(response);
-                }, 500);
-            } else {
-                addBotMessage('Let me think...');
-                // Fallback to deployed Railway proxy for Hugging Face AI model
-                const aiResponse = await fetch('https://relieflink-lite-production.up.railway.app/api/ai', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ inputs: message })
-                })
-                .then(res => res.json())
-                .then(data => Array.isArray(data) && data[0]?.generated_text ? data[0].generated_text : (data.generated_text || "Sorry, I couldn't find an answer."))
-                .catch(() => "Sorry, I couldn't reach the AI service right now.");
-                addBotMessage(aiResponse);
-            }
+            // This function is now unused, but kept for manual text input compatibility.
+            // All flows are handled by handleMainOption and showMainMenu.
         }
     </script>
 </body>
