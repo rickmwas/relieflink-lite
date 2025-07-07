@@ -116,6 +116,9 @@
           <a href="sms:+254113242983?body=I%20need%20emergency%20assistance%20via%20ReliefLink%20Lite" class="sms-btn">
             <i class="fas fa-sms"></i> SMS Us
           </a>
+          <button id="share-btn" class="btn btn-outline" style="margin-left:1rem;display:flex;align-items:center;gap:0.5rem;">
+            <i class="fas fa-share-alt"></i> <span>Share</span>
+          </button>
         </div>
 
         <!-- User Options Dropdown -->
@@ -149,5 +152,57 @@
     <script src="js/theme.js"></script>
     <script src="js/onboarding.js"></script>
     <script src="js/hero-visual.js"></script>
+    <script>
+    // Share button logic (Web Share API fallback)
+    document.addEventListener('DOMContentLoaded', function() {
+      const shareBtn = document.getElementById('share-btn');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', function() {
+          const shareData = {
+            title: 'ReliefLink Lite',
+            text: 'Connect people in need with nearby aid providers through ReliefLink Lite.',
+            url: window.location.origin
+          };
+          if (navigator.share) {
+            navigator.share(shareData).catch(()=>{});
+          } else {
+            // Fallback: copy link to clipboard
+            navigator.clipboard.writeText(shareData.url);
+            shareBtn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            setTimeout(()=>{
+              shareBtn.innerHTML = '<i class="fas fa-share-alt"></i> <span>Share</span>';
+            }, 1800);
+          }
+        });
+      }
+    });
+
+    // Floating contact/chatbot button logic
+    (function(){
+      const btn = document.getElementById('floating-contact-btn');
+      if (!btn) return;
+      btn.addEventListener('click', function() {
+        // Try to open chatbot if present, else show quick contact
+        const chatbotBtn = document.getElementById('chatbotButton');
+        if (chatbotBtn) {
+          chatbotBtn.click();
+        } else {
+          // Scroll to quick contact section
+          const qc = document.querySelector('.quick-contact');
+          if (qc) qc.scrollIntoView({behavior:'smooth'});
+        }
+      });
+      // Hide on desktop, show on mobile only
+      function toggleFloatingBtn() {
+        if (window.innerWidth <= 700) {
+          btn.style.display = 'flex';
+        } else {
+          btn.style.display = 'none';
+        }
+      }
+      window.addEventListener('resize', toggleFloatingBtn);
+      toggleFloatingBtn();
+    })();
+    </script>
 </body>
 </html>

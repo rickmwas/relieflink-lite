@@ -478,6 +478,22 @@ h1, h2, h3, h4, h5, h6 {
     }
 }
 
+/* --- Visual Enhancements: Subtle Animations for Buttons and Cards --- */
+.btn, .btn-primary, .btn-secondary, .btn-outline, .btn-admin, .whatsapp-btn, .sms-btn {
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 2px 8px rgba(52,152,219,0.06);
+}
+.btn:hover, .btn-primary:hover, .btn-secondary:hover, .btn-outline:hover, .btn-admin:hover, .whatsapp-btn:hover, .sms-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 6px 24px rgba(52,152,219,0.13);
+}
+.card {
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.card:active {
+  transform: scale(0.98);
+}
+
 /* Form Styles */
 .form-section {
     flex: 1;
