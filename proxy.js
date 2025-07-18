@@ -1,10 +1,8 @@
 require('dotenv').config();
 const express = require('express');
+const fetch = require('node-fetch');
 const app = express();
 app.use(express.json());
-
-// Replace require with dynamic import for node-fetch ESM compatibility
-const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 app.post('/api/ai', async (req, res) => {
   console.log('Received:', req.body.inputs); // Add this line
